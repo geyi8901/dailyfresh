@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from utils.mixin import LoginRequiredMixin
 from django_redis import get_redis_connection
 from goods.models import GoodsSKU
-#from celery_tasks.tasks import send_register_active_email
+from celery_tasks.tasks import send_register_active_email
 import re
 from user.models import User, Address
 
@@ -62,19 +62,19 @@ class RegisterView(View):
         info = {'confirm': user.id}
         token = serializer.dumps(info) #这个是bytes数据格式,如果不解码，导致发送邮件激活链接中，有 b'....' 格式
         token = token.decode('utf8') #进行编码 bytes转为str类型
-        # # 发邮件
-        subject = '天天生鲜欢迎信息'
-        message = '很高兴能认识你。非常感谢'
-        sender = settings.EMAIL_FROM
-        # html_message = '<h1>%s，欢迎您成为天天生鲜注册会员！</h1><h1>请点击以下链接激活您的账户</h1><br/><a href="http:127.0.0.1:8000/user/active/%s">http:127.0.0.1:8000/user/active/%s</a>'%(username,token,token)
-        print('^^^^^^^^^^^^setting:' + sender)
-        recvier = [email]
-        print('^^^^^^^^^^^email信息：' + str(recvier))
-        send_mail(subject, message, sender, recvier)
+        # # # 发邮件
+        # subject = '天天生鲜欢迎信息'
+        # message = '很高兴能认识你。非常感谢'
+        # sender = settings.EMAIL_FROM
+        # # html_message = '<h1>%s，欢迎您成为天天生鲜注册会员！</h1><h1>请点击以下链接激活您的账户</h1><br/><a href="http:127.0.0.1:8000/user/active/%s">http:127.0.0.1:8000/user/active/%s</a>'%(username,token,token)
+        # print('^^^^^^^^^^^^setting:' + sender)
+        # recvier = [email]
+        # print('^^^^^^^^^^^email信息：' + str(recvier))
+        # send_mail(subject, message, sender, recvier)
 
 
         #使用celery发送邮件
-        #send_register_active_email.delay(email,username,token)
+        send_register_active_email.delay(email,username,token)
 
 
 

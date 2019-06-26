@@ -1,8 +1,20 @@
 from django.core.files.storage import Storage
 from fdfs_client.client import Fdfs_client
+from django.conf import settings
 
 
 class FDFSStorage(Storage):
+
+    def __init__(self, client_conf=None, base_url=None):
+        '''初始化'''
+        if client_conf is None:
+            client_conf = settings.FDFS_CLIENT_CONF
+        self.client_conf = client_conf
+
+        if base_url is None:
+            base_url = settings.FDFS_URL
+        self.base_url = base_url
+
     def _open(self, name,mode='rb'):
         pass
     def _save(self, name, content):
@@ -10,7 +22,6 @@ class FDFSStorage(Storage):
         #name保存的上传文件的名字
         #conteng包含你上传文件内容的File对象
         #创建一个Fdfs_client对象
-        print('&&&&&&&&&&&&save 进入')
         client = Fdfs_client('./utils/fdfs/client.conf')
         #上传文件
         res = client.upload_by_buffer(content.read())
