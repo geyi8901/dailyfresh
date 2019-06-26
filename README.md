@@ -48,4 +48,10 @@ pip install -Ur plis**.txt
 
 ./python manage.py runserver
 
+------------------------------------------
+命令总结:
+django项目启动: python manage.py runserver
+redis服务启动:
+redis客户端启动: redis-cli -h 192.168.0.108    或者本机直接 redis-cli
+celery启动,在celery服务器上粘贴自己项目代码,然后项目目录中执行: celery -A celery_tasks.tasks worker -l info
 
