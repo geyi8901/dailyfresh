@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from goods.models import GoodsType, IndexGoodsBanner, IndexPromotionBanner, IndexTypeGoodsBanner
+from django_redis import get_redis_connection
 
 # Create your views here.
 
@@ -37,6 +38,12 @@ class IndexView(View):
             type.title_banners = title_banners
         #获取用户购物车种商品数目
         cart_count = 0
+        user = request.user
+        if user.is_authenticated():
+            #用户已经登录
+            conn = get_redis_connection('default')
+            cart_key = 'cart_%d'%user.id
+            cart_count = conn.hlen(cart_key)
 
         #组织模板上下文
         context = {'types':types,
