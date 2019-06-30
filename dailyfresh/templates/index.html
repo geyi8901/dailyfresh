@@ -67,7 +67,7 @@
     {# 网页底部引入文件块 #}
 	{% block bottomfiles %}
 
-        <script type="text/javascript" src="js/slideshow.js"></script>
+        <script type="text/javascript" src="{% static 'js/slideshow.js' %}"></script>
 	<script type="text/javascript">
 		BCSlideshow('focuspic');
 		var oFruit = document.getElementById('fruit_more');
