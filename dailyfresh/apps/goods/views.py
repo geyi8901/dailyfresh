@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from django.views.generic import View
+from django.views.generic import View #导入类视图
 from goods.models import GoodsSKU, GoodsType, IndexGoodsBanner, IndexPromotionBanner, IndexTypeGoodsBanner
 from order.models import OrderGoods
 from django_redis import get_redis_connection
