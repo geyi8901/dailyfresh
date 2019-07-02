@@ -186,3 +186,4 @@ class CartDeleteView(View):
 
         #返回应答
         return JsonResponse({'res':3, 'total_count':total_count,'message':'删除成功'})
+
