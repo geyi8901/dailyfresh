@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View
 from django.core.urlresolvers import reverse
-from goods.models import GoodsSKU
-from django.db import transaction
-from django_redis import get_redis_connection
-from user.models import Address
-from utils.mixin import LoginRequiredMixin
 from django.http import JsonResponse
-from order.models import OrderInfo, OrderGoods
-from datetime import datetime
+from django.db import transaction
 from django.conf import settings
+from django.views.generic import View
+
+from user.models import Address
+from goods.models import GoodsSKU
+from order.models import OrderInfo, OrderGoods
+
+from django_redis import get_redis_connection
+from utils.mixin import LoginRequiredMixin
+from datetime import datetime
 from alipay import AliPay
 import os
 # Create your views here.
@@ -77,11 +79,13 @@ class OrderPlaceView(LoginRequiredMixin, View):
         # 使用模板
         return render(request, 'place_order.html', context)
 
-#前段传递的参数: addr_id, pay_method, sku_ids
-#悲观锁
+
+# 前端传递的参数:地址id(addr_id) 支付方式(pay_method) 用户要购买的商品id字符串(sku_ids)
+# mysql事务: 一组sql操作，要么都成功，要么都失败
+# 高并发:秒杀
+# 支付宝支付
 class OrderCommitView1(View):
     '''订单创建'''
-
     @transaction.atomic
     def post(self, request):
         '''订单创建'''
@@ -89,33 +93,33 @@ class OrderCommitView1(View):
         user = request.user
         if not user.is_authenticated():
             # 用户未登录
-            return JsonResponse({'res': 0, 'errmsg': '用户未登录'})
+            return JsonResponse({'res':0, 'errmsg':'用户未登录'})
 
         # 接收参数
         addr_id = request.POST.get('addr_id')
         pay_method = request.POST.get('pay_method')
-        sku_ids = request.POST.get('sku_ids')  # 1,3
+        sku_ids = request.POST.get('sku_ids') # 1,3
 
         # 校验参数
         if not all([addr_id, pay_method, sku_ids]):
-            return JsonResponse({'res': 1, 'errmsg': '参数不完整'})
+            return JsonResponse({'res':1, 'errmsg':'参数不完整'})
 
         # 校验支付方式
         if pay_method not in OrderInfo.PAY_METHODS.keys():
-            return JsonResponse({'res': 2, 'errmsg': '非法的支付方式'})
+            return JsonResponse({'res':2, 'errmsg':'非法的支付方式'})
 
         # 校验地址
         try:
             addr = Address.objects.get(id=addr_id)
         except Address.DoesNotExist:
             # 地址不存在
-            return JsonResponse({'res': 3, 'errmsg': '地址非法'})
+            return JsonResponse({'res':3, 'errmsg':'地址非法'})
 
         # todo: 创建订单核心业务
 
         # 组织参数
         # 订单id: 20171122181630+用户id
-        order_id = datetime.now().strftime('%Y%m%d%H%M%S') + str(user.id)
+        order_id = datetime.now().strftime('%Y%m%d%H%M%S')+str(user.id)
 
         # 运费
         transit_price = 10
@@ -138,21 +142,20 @@ class OrderCommitView1(View):
 
             # todo: 用户的订单中有几个商品，需要向df_order_goods表中加入几条记录
             conn = get_redis_connection('default')
-            cart_key = 'cart_%d' % user.id
+            cart_key = 'cart_%d'%user.id
 
             sku_ids = sku_ids.split(',')
             for sku_id in sku_ids:
                 # 获取商品的信息
                 try:
                     # select * from df_goods_sku where id=sku_id for update;
-                    # 悲观锁,当事务提交时,解除锁
                     sku = GoodsSKU.objects.select_for_update().get(id=sku_id)
                 except:
                     # 商品不存在
                     transaction.savepoint_rollback(save_id)
-                    return JsonResponse({'res': 4, 'errmsg': '商品不存在'})
+                    return JsonResponse({'res':4, 'errmsg':'商品不存在'})
 
-                print('user:%d stock:%d' % (user.id, sku.stock))
+                print('user:%d stock:%d'%(user.id, sku.stock))
                 import time
                 time.sleep(10)
 
@@ -162,7 +165,7 @@ class OrderCommitView1(View):
                 # todo: 判断商品的库存
                 if int(count) > sku.stock:
                     transaction.savepoint_rollback(save_id)
-                    return JsonResponse({'res': 6, 'errmsg': '商品库存不足'})
+                    return JsonResponse({'res':6, 'errmsg':'商品库存不足'})
 
                 # todo: 向df_order_goods表中添加一条记录
                 OrderGoods.objects.create(order=order,
@@ -170,13 +173,14 @@ class OrderCommitView1(View):
                                           count=count,
                                           price=sku.price)
 
+
                 # todo: 更新商品的库存和销量
                 sku.stock -= int(count)
                 sku.sales += int(count)
                 sku.save()
 
                 # todo: 累加计算订单商品的总数量和总价格
-                amount = sku.price * int(count)
+                amount = sku.price*int(count)
                 total_count += int(count)
                 total_price += amount
 
@@ -186,7 +190,7 @@ class OrderCommitView1(View):
             order.save()
         except Exception as e:
             transaction.savepoint_rollback(save_id)
-            return JsonResponse({'res': 7, 'errmsg': '下单失败'})
+            return JsonResponse({'res':7, 'errmsg':'下单失败'})
 
         # 提交事务
         transaction.savepoint_commit(save_id)
@@ -195,11 +199,9 @@ class OrderCommitView1(View):
         conn.hdel(cart_key, *sku_ids)
 
         # 返回应答
-        return JsonResponse({'res': 5, 'message': '创建成功'})
+        return JsonResponse({'res':5, 'message':'创建成功'})
 
 
-#前段传递的参数: addr_id, pay_method, sku_ids
-#乐观锁
 class OrderCommitView(View):
     '''订单创建'''
     @transaction.atomic
@@ -332,63 +334,72 @@ class OrderCommitView(View):
         return JsonResponse({'res':5, 'message':'创建成功'})
 
 
-#/order/pay
+# ajax post
+# 前端传递的参数:订单id(order_id)
+# /order/pay
 class OrderPayView(View):
     '''订单支付'''
-    def post(self,request):
+    def post(self, request):
         '''订单支付'''
-        #用户是否登录
+        # 用户是否登录
         user = request.user
         if not user.is_authenticated():
             return JsonResponse({'res':0, 'errmsg':'用户未登录'})
-        #接受参数
+
+        # 接收参数
         order_id = request.POST.get('order_id')
 
-
-        #进行校验
+        # 校验参数
         if not order_id:
-            return JsonResponse({'res':1, 'errmsg':'无效的订单'})
+            return JsonResponse({'res':1, 'errmsg':'无效的订单id'})
 
         try:
-            order = OrderInfo.objects.get(order_id=order_id, user=user, pay_method=3,order_status=1)
+            order = OrderInfo.objects.get(order_id=order_id,
+                                          user=user,
+                                          pay_method=3,
+                                          order_status=1)
         except OrderInfo.DoesNotExist:
             return JsonResponse({'res':2, 'errmsg':'订单错误'})
-        #业务处理:使用python skd 调用支付宝的支付接口
-        app_private_key_string = open('apps/order/app_private_key.pem').read()
-        alipay_public_key_string = open('apps/order/alipay_public_key.pem').read()
-        # print('&&&&&&&&&&&&&&&&&&'+app_private_key_string)
+
+        # 业务处理:使用python sdk调用支付宝的支付接口
+        # 初始化
         alipay = AliPay(
-            appid="2016101000653584",
+            appid="2016101000653584", # 应用id
             app_notify_url=None,  # 默认回调url
-            app_private_key_string=app_private_key_string,
-            # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
-            alipay_public_key_string=alipay_public_key_string,
+            app_private_key_path=os.path.join(settings.BASE_DIR, 'apps/order/app_private_key.pem'),
+            alipay_public_key_path=os.path.join(settings.BASE_DIR, 'apps/order/alipay_public_key.pem'), # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
             sign_type="RSA2",  # RSA 或者 RSA2
-            debug = True  # 默认False
+            debug=True  # 默认False
         )
 
-        # 初始化
-        # alipay = AliPay(
-        #     appid="2016101000653584", # 应用id
-        #     app_notify_url=None,  # 默认回调url
-        #     app_private_key_path=os.path.join(settings.BASE_DIR, 'apps/order/app_private_key.pem'),
-        #     alipay_public_key_path=os.path.join(settings.BASE_DIR, 'apps/order/alipay_public_key.pem'), # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
-        #     sign_type="RSA2",  # RSA 或者 RSA2
-        #     debug=True  # 默认False
-        # )
-
-        #调用支付接口
-        # 如果你是 Python 3的用户，使用默认的字符串即可
-        subject = "天天生鲜%s"%order_id
-        # 电脑网站支付，需要跳转到https://openapi.alipay.com/gateway.do? + order_string
-        total_pay = order.total_price + order.transit_price
+        # 调用支付接口
+        # 电脑网站支付，需要跳转到https://openapi.alipaydev.com/gateway.do? + order_string
+        total_pay = order.total_price+order.transit_price # Decimal
         order_string = alipay.api_alipay_trade_page_pay(
-            out_trade_no=order_id,
-            total_amount=str(total_pay),
-            subject=subject,
+            out_trade_no=order_id, # 订单id
+            total_amount=str(total_pay), # 支付总金额
+            subject='天天生鲜%s'%order_id,
             return_url=None,
             notify_url=None  # 可选, 不填则使用默认notify url
         )
-        #返回应答
+
+        # 返回应答
         pay_url = 'https://openapi.alipaydev.com/gateway.do?' + order_string
         return JsonResponse({'res':3, 'pay_url':pay_url})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
