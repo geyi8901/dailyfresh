@@ -13,6 +13,7 @@
       <change afterPath="$PROJECT_DIR$/templates/cart.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/detail.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/order_comment.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/place_order.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/search/__init__.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/search/indexes/__init__.py" afterDir="false" />
@@ -51,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/user_center_order.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="70" column="34" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="34" />
+            <state relative-caret-position="-270">
+              <caret line="80" column="42" selection-start-line="80" selection-start-column="42" selection-end-line="80" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -60,8 +61,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/order/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="6" column="32" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="32" />
+            <state relative-caret-position="168">
+              <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -69,13 +70,36 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/order/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="452" column="19" lean-forward="true" selection-start-line="452" selection-start-column="19" selection-end-line="452" selection-end-column="19" />
+            <state relative-caret-position="-612">
+              <caret line="529" column="14" lean-forward="true" selection-start-line="529" selection-start-column="14" selection-end-line="529" selection-end-column="14" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/order_comment.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="672">
+              <caret line="32" column="15" selection-start-line="32" selection-start-column="15" selection-end-line="32" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/detail.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
+              <folding>
+                <element signature="e#2311#2332#0#HTML" expanded="true" />
+                <element signature="e#2430#2436#0#HTML" expanded="true" />
+                <element signature="e#2436#2442#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -159,7 +183,6 @@
         <option value="$PROJECT_DIR$/dailyfresh/settings.py" />
         <option value="$PROJECT_DIR$/templates/search/indexes/goods/goodssku_text.txt" />
         <option value="$PROJECT_DIR$/apps/goods/views.py" />
-        <option value="$PROJECT_DIR$/templates/detail.html" />
         <option value="$PROJECT_DIR$/apps/cart/urls.py" />
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/apps/cart/views.py" />
@@ -172,10 +195,12 @@
         <option value="$PROJECT_DIR$/templates/place_order.html" />
         <option value="$PROJECT_DIR$/apps/order/alipay_public_key.pem" />
         <option value="$PROJECT_DIR$/apps/order/views2.py" />
+        <option value="$PROJECT_DIR$/templates/user_center_order备份.html" />
         <option value="$PROJECT_DIR$/templates/user_center_order.html" />
         <option value="$PROJECT_DIR$/apps/order/urls.py" />
-        <option value="$PROJECT_DIR$/templates/user_center_order备份.html" />
+        <option value="$PROJECT_DIR$/templates/order_comment.html" />
         <option value="$PROJECT_DIR$/apps/order/views.py" />
+        <option value="$PROJECT_DIR$/templates/detail.html" />
       </list>
     </option>
   </component>
@@ -369,18 +394,18 @@
       <workItem from="1561447343992" duration="5185000" />
       <workItem from="1561532469393" duration="8040000" />
       <workItem from="1561604471361" duration="61157000" />
-      <workItem from="1562207566381" duration="5149000" />
+      <workItem from="1562207566381" duration="8621000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="109530000" />
+    <option name="totallyTimeSpent" value="113002000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21732157" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21732157" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="0" />
@@ -393,7 +418,7 @@
       <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32874355" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.050083473" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3639399" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.42070118" />
       <window_info anchor="right" id="SciView" order="0" />
@@ -415,13 +440,6 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.virtualenvs/py_django/lib/python3.6/site-packages/django/core/files/storage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="125" column="8" selection-start-line="125" selection-start-column="8" selection-end-line="125" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.virtualenvs/py_django/lib/python3.6/site-packages/django/contrib/staticfiles/handlers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="89">
@@ -594,13 +612,6 @@
           <folding>
             <element signature="e#383#392#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="173" column="35" lean-forward="true" selection-start-line="173" selection-start-column="35" selection-end-line="173" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -786,15 +797,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/user_center_order.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="70" column="34" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="34" />
+        <state relative-caret-position="-270">
+          <caret line="80" column="42" selection-start-line="80" selection-start-column="42" selection-end-line="80" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/order/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" column="32" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="32" />
+        <state relative-caret-position="168">
+          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
@@ -803,10 +814,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/order/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="452" column="19" lean-forward="true" selection-start-line="452" selection-start-column="19" selection-end-line="452" selection-end-column="19" />
+        <state relative-caret-position="-612">
+          <caret line="529" column="14" lean-forward="true" selection-start-line="529" selection-start-column="14" selection-end-line="529" selection-end-column="14" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order_comment.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="32" column="15" selection-start-line="32" selection-start-column="15" selection-end-line="32" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
+          <folding>
+            <element signature="e#2311#2332#0#HTML" expanded="true" />
+            <element signature="e#2430#2436#0#HTML" expanded="true" />
+            <element signature="e#2436#2442#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
